@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevOps Engineer Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --accent: #00d4ff;
+    --accent2: #f97316;
+    --accent3: #22c55e;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --border: #1e293b;
+    --glow: 0 0 30px rgba(0,212,255,0.15);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content:'';
+    position:fixed; inset:0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events:none; z-index:0; opacity:0.4;
+  }
+
+  /* ── NAVBAR ── */
+  nav {
+    position: fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(10,14,26,0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+  .nav-logo span { color: var(--accent2); }
+  .nav-links { display:flex; gap:2.5rem; }
+  .nav-links a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 8rem 4rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid-bg {
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 40%, transparent 100%);
+  }
+
+  .hero-orb {
+    position:absolute;
+    border-radius:50%;
+    filter:blur(80px);
+    pointer-events:none;
+  }
+  .orb1 { width:500px;height:500px; background:rgba(0,212,255,0.06); top:-100px; right:-100px; }
+  .orb2 { width:400px;height:400px; background:rgba(249,115,22,0.05); bottom:-50px; left:10%; }
+
+  .hero-content { position:relative; z-index:1; max-width:800px; }
+
+  .hero-tag {
+    display:inline-flex; align-items:center; gap:0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size:0.75rem;
+    color: var(--accent);
+    border:1px solid rgba(0,212,255,0.3);
+    padding:0.4rem 1rem;
+    border-radius:2px;
+    margin-bottom:2rem;
+    letter-spacing:0.1em;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-tag::before { content:'▶'; font-size:0.5rem; }
+
+  h1.hero-name {
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight:800;
+    line-height:1;
+    letter-spacing:-0.02em;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  h1.hero-name .highlight { color: var(--accent); }
+  h1.hero-name .highlight2 { color: var(--accent2); }
+
+  .hero-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size:1.1rem;
+    color: var(--muted);
+    margin-top:1rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .hero-role span { color: var(--accent3); }
+
+  .hero-desc {
+    font-size:1.05rem;
+    color: var(--muted);
+    max-width:560px;
+    line-height:1.7;
+    margin-top:1.5rem;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .hero-ctas {
+    display:flex; gap:1rem; margin-top:2.5rem;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+  .btn {
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.8rem;
+    letter-spacing:0.08em;
+    padding:0.8rem 2rem;
+    border-radius:2px;
+    cursor:pointer;
+    text-decoration:none;
+    transition: all 0.2s;
+    display:inline-flex; align-items:center; gap:0.5rem;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    border:none;
+    font-weight:700;
+  }
+  .btn-primary:hover { background:#fff; box-shadow: 0 0 30px rgba(0,212,255,0.4); }
+  .btn-ghost {
+    background:transparent;
+    color: var(--accent);
+    border:1px solid rgba(0,212,255,0.4);
+  }
+  .btn-ghost:hover { background:rgba(0,212,255,0.08); border-color:var(--accent); }
+
+  .hero-stats {
+    display:flex; gap:3rem; margin-top:4rem;
+    animation: fadeUp 0.6s 0.5s ease both;
+  }
+  .stat-item { border-left:2px solid var(--border); padding-left:1rem; }
+  .stat-num { font-size:2rem; font-weight:800; color:var(--accent); line-height:1; }
+  .stat-label { font-family:'JetBrains Mono', monospace; font-size:0.7rem; color:var(--muted); margin-top:0.25rem; letter-spacing:0.08em; }
+
+  /* ── TERMINAL WIDGET ── */
+  .hero-terminal {
+    position:absolute; right:4rem; top:50%; transform:translateY(-50%);
+    width:380px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:6px;
+    overflow:hidden;
+    box-shadow: var(--glow), 0 40px 80px rgba(0,0,0,0.5);
+    animation: fadeIn 0.8s 0.3s ease both;
+  }
+  .terminal-bar {
+    display:flex; align-items:center; gap:0.5rem;
+    padding:0.7rem 1rem;
+    background:var(--surface2);
+    border-bottom:1px solid var(--border);
+  }
+  .t-dot { width:10px; height:10px; border-radius:50%; }
+  .t-red { background:#ff5f57; }
+  .t-yellow { background:#febc2e; }
+  .t-green { background:#28c840; }
+  .t-title { font-family:'JetBrains Mono', monospace; font-size:0.7rem; color:var(--muted); margin-left:0.5rem; }
+  .terminal-body { padding:1.2rem; font-family:'JetBrains Mono', monospace; font-size:0.78rem; line-height:1.8; }
+  .t-prompt { color: var(--accent3); }
+  .t-cmd { color: var(--text); }
+  .t-output { color: var(--muted); }
+  .t-success { color: var(--accent3); }
+  .t-info { color: var(--accent); }
+  .cursor {
+    display:inline-block; width:8px; height:14px;
+    background:var(--accent); vertical-align:middle;
+    animation: blink 1s step-end infinite;
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 6rem 4rem; position:relative; }
+  .section-tag {
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem;
+    color:var(--accent);
+    letter-spacing:0.15em;
+    margin-bottom:0.5rem;
+  }
+  h2.section-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight:800;
+    letter-spacing:-0.02em;
+    line-height:1.1;
+  }
+  .divider { width:60px; height:3px; background:var(--accent); margin:1.5rem 0 3rem; border-radius:2px; }
+
+  /* ── SKILLS ── */
+  #skills { background: var(--surface); }
+  .skills-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; }
+  .skill-card {
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:4px;
+    padding:1.8rem;
+    transition:all 0.3s;
+    position:relative;
+    overflow:hidden;
+  }
+  .skill-card::before {
+    content:'';
+    position:absolute; top:0; left:0; right:0; height:2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    opacity:0; transition:opacity 0.3s;
+  }
+  .skill-card:hover { border-color:rgba(0,212,255,0.3); transform:translateY(-4px); box-shadow:var(--glow); }
+  .skill-card:hover::before { opacity:1; }
+  .skill-icon { font-size:1.8rem; margin-bottom:1rem; }
+  .skill-cat { font-family:'JetBrains Mono', monospace; font-size:0.7rem; color:var(--accent2); letter-spacing:0.1em; margin-bottom:0.4rem; }
+  .skill-name { font-size:1.1rem; font-weight:700; margin-bottom:1rem; }
+  .tags { display:flex; flex-wrap:wrap; gap:0.4rem; }
+  .tag {
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.68rem;
+    padding:0.25rem 0.6rem;
+    border-radius:2px;
+    background:var(--surface2);
+    color:var(--muted);
+    border:1px solid var(--border);
+  }
+
+  /* ── PIPELINE ── */
+  #pipeline { }
+  .pipeline-flow {
+    display:flex; align-items:center; gap:0;
+    overflow-x:auto; padding-bottom:1rem;
+    margin-top:2rem;
+  }
+  .pipe-step {
+    flex-shrink:0;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:4px;
+    padding:1.2rem 1.5rem;
+    text-align:center;
+    min-width:140px;
+    transition:all 0.3s;
+    position:relative;
+  }
+  .pipe-step:hover { border-color:var(--accent); box-shadow:var(--glow); }
+  .pipe-icon { font-size:1.5rem; margin-bottom:0.5rem; }
+  .pipe-label { font-family:'JetBrains Mono', monospace; font-size:0.72rem; color:var(--text); font-weight:600; }
+  .pipe-sub { font-size:0.65rem; color:var(--muted); margin-top:0.2rem; font-family:'JetBrains Mono', monospace; }
+  .pipe-arrow {
+    font-size:1.2rem; color:var(--accent); padding:0 0.5rem; flex-shrink:0;
+    animation: pulse-arrow 2s ease-in-out infinite;
+  }
+  .pipe-status {
+    position:absolute; top:-6px; right:-6px;
+    width:12px; height:12px; border-radius:50%;
+    background:var(--accent3);
+    box-shadow: 0 0 8px var(--accent3);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  /* ── PROJECTS ── */
+  #projects { background: var(--surface); }
+  .projects-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:1.5rem; }
+  .project-card {
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:4px;
+    padding:2rem;
+    transition:all 0.3s;
+    display:flex; flex-direction:column;
+  }
+  .project-card:hover { border-color:rgba(0,212,255,0.3); transform:translateY(-4px); box-shadow:var(--glow); }
+  .project-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1rem; }
+  .project-icon { font-size:2rem; }
+  .project-badge {
+    font-family:'JetBrains Mono', monospace; font-size:0.65rem;
+    padding:0.2rem 0.6rem; border-radius:2px;
+    background:rgba(34,197,94,0.1); color:var(--accent3);
+    border:1px solid rgba(34,197,94,0.2);
+  }
+  .project-name { font-size:1.2rem; font-weight:700; margin-bottom:0.5rem; }
+  .project-desc { font-size:0.9rem; color:var(--muted); line-height:1.6; margin-bottom:1.5rem; flex:1; }
+  .project-stack { display:flex; flex-wrap:wrap; gap:0.4rem; margin-bottom:1.5rem; }
+  .project-links { display:flex; gap:1rem; }
+  .project-link {
+    font-family:'JetBrains Mono', monospace; font-size:0.72rem;
+    color:var(--accent); text-decoration:none; letter-spacing:0.05em;
+    transition:color 0.2s;
+  }
+  .project-link:hover { color:#fff; }
+
+  /* ── EXPERIENCE ── */
+  .timeline { position:relative; padding-left:2rem; }
+  .timeline::before {
+    content:''; position:absolute; left:0; top:0; bottom:0;
+    width:1px; background:linear-gradient(to bottom, var(--accent), transparent);
+  }
+  .timeline-item {
+    position:relative; margin-bottom:3rem;
+    padding-left:2rem;
+  }
+  .timeline-dot {
+    position:absolute; left:-2.4rem; top:0.4rem;
+    width:10px; height:10px; border-radius:50%;
+    background:var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+  }
+  .exp-period {
+    font-family:'JetBrains Mono', monospace; font-size:0.72rem;
+    color:var(--accent2); letter-spacing:0.08em; margin-bottom:0.4rem;
+  }
+  .exp-role { font-size:1.2rem; font-weight:700; margin-bottom:0.2rem; }
+  .exp-company { font-size:0.9rem; color:var(--accent); margin-bottom:0.8rem; }
+  .exp-list { list-style:none; }
+  .exp-list li {
+    font-size:0.9rem; color:var(--muted); padding:0.3rem 0;
+    padding-left:1.2rem; position:relative; line-height:1.6;
+  }
+  .exp-list li::before { content:'›'; position:absolute; left:0; color:var(--accent3); }
+
+  /* ── CERTIFICATIONS ── */
+  #certs { background: var(--surface); }
+  .certs-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem; }
+  .cert-card {
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:4px;
+    padding:1.5rem;
+    display:flex; align-items:center; gap:1rem;
+    transition:all 0.3s;
+  }
+  .cert-card:hover { border-color:rgba(0,212,255,0.3); box-shadow:var(--glow); }
+  .cert-logo { font-size:2rem; flex-shrink:0; }
+  .cert-info {}
+  .cert-name { font-size:0.85rem; font-weight:700; margin-bottom:0.2rem; }
+  .cert-issuer { font-family:'JetBrains Mono', monospace; font-size:0.68rem; color:var(--muted); }
+
+  /* ── CONTACT ── */
+  #contact {}
+  .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start; }
+  .contact-info { }
+  .contact-desc { font-size:1rem; color:var(--muted); line-height:1.7; margin-bottom:2rem; }
+  .contact-links { display:flex; flex-direction:column; gap:1rem; }
+  .contact-link {
+    display:flex; align-items:center; gap:1rem;
+    font-family:'JetBrains Mono', monospace; font-size:0.85rem;
+    color:var(--text); text-decoration:none;
+    padding:0.8rem 1.2rem;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:4px;
+    transition:all 0.2s;
+  }
+  .contact-link:hover { border-color:var(--accent); color:var(--accent); }
+  .contact-link-icon { font-size:1.1rem; }
+  .contact-form {
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:4px;
+    padding:2rem;
+  }
+  .form-group { margin-bottom:1.2rem; }
+  .form-label {
+    display:block;
+    font-family:'JetBrains Mono', monospace; font-size:0.72rem;
+    color:var(--muted); letter-spacing:0.08em; margin-bottom:0.4rem;
+  }
+  .form-input {
+    width:100%;
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:2px;
+    padding:0.75rem 1rem;
+    color:var(--text);
+    font-family:'JetBrains Mono', monospace; font-size:0.85rem;
+    outline:none; transition:border-color 0.2s;
+    resize: vertical;
+  }
+  .form-input:focus { border-color:var(--accent); }
+  .form-input::placeholder { color:var(--muted); }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align:center; padding:2rem;
+    border-top:1px solid var(--border);
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem; color:var(--muted);
+  }
+  footer span { color:var(--accent2); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(20px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity:0; } to { opacity:1; }
+  }
+  @keyframes blink {
+    0%,100% { opacity:1; } 50% { opacity:0; }
+  }
+  @keyframes pulse-dot {
+    0%,100% { box-shadow: 0 0 8px var(--accent3); }
+    50% { box-shadow: 0 0 16px var(--accent3); }
+  }
+  @keyframes pulse-arrow {
+    0%,100% { opacity:0.5; } 50% { opacity:1; }
+  }
+  @keyframes type { from { width:0; } }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:1024px) {
+    .hero-terminal { display:none; }
+    .contact-grid { grid-template-columns:1fr; }
+    nav { padding:1rem 2rem; }
+    section { padding:4rem 2rem; }
+    .hero { padding:7rem 2rem 4rem; }
+  }
+  @media(max-width:640px) {
+    .nav-links { display:none; }
+    .hero-stats { gap:1.5rem; }
+    .pipeline-flow { flex-direction:column; align-items:stretch; }
+    .pipe-arrow { transform:rotate(90deg); text-align:center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">&lt;<span>dev</span>ops/&gt;</div>
+  <div class="nav-links">
+    <a href="#skills">// skills</a>
+    <a href="#pipeline">// pipeline</a>
+    <a href="#projects">// projects</a>
+    <a href="#experience">// experience</a>
+    <a href="#contact">// contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-orb orb1"></div>
+  <div class="hero-orb orb2"></div>
+
+  <div class="hero-content">
+    <div class="hero-tag">AVAILABLE FOR OPPORTUNITIES</div>
+    <h1 class="hero-name">
+      Arjun<br>
+      <span class="highlight">Kumar</span>
+      <span class="highlight2">.</span>
+    </h1>
+    <div class="hero-role">
+      <span>DevOps</span> Engineer &amp; Platform Architect
+    </div>
+    <p class="hero-desc">
+      Building resilient infrastructure, automating everything, and bridging the gap between Dev and Ops. 
+      Specialized in Kubernetes, CI/CD pipelines, and cloud-native Java applications.
+    </p>
+    <div class="hero-ctas">
+      <a href="#projects" class="btn btn-primary">▶ View Projects</a>
+      <a href="#contact" class="btn btn-ghost">→ Hire Me</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">5+</div>
+        <div class="stat-label">YRS EXPERIENCE</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">30+</div>
+        <div class="stat-label">PROJECTS SHIPPED</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">99.9%</div>
+        <div class="stat-label">UPTIME SLA</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TERMINAL -->
+  <div class="hero-terminal">
+    <div class="terminal-bar">
+      <div class="t-dot t-red"></div>
+      <div class="t-dot t-yellow"></div>
+      <div class="t-dot t-green"></div>
+      <div class="t-title">arjun@devops ~ zsh</div>
+    </div>
+    <div class="terminal-body" id="terminal-body">
+      <div><span class="t-prompt">➜ ~ </span><span class="t-cmd">kubectl get pods -n production</span></div>
+      <div class="t-success">NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;STATUS&nbsp;&nbsp;READY</div>
+      <div class="t-output">api-gateway-7d8f9-x2k&nbsp;&nbsp;Running&nbsp;1/1</div>
+      <div class="t-output">auth-service-4b2c-m9p&nbsp;&nbsp;Running&nbsp;1/1</div>
+      <div class="t-output">order-svc-6a1d-r3n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Running&nbsp;3/3</div>
+      <br>
+      <div><span class="t-prompt">➜ ~ </span><span class="t-cmd">helm upgrade --install myapp .</span></div>
+      <div class="t-success">Release "myapp" upgraded. ✓</div>
+      <br>
+      <div><span class="t-prompt">➜ ~ </span><span class="t-cmd">terraform apply -auto-approve</span></div>
+      <div class="t-info">Apply complete! Resources: 12 added.</div>
+      <br>
+      <div><span class="t-prompt">➜ ~ </span><span class="t-cmd">docker build -t app:latest .</span></div>
+      <div class="t-success">Successfully built ✓</div>
+      <br>
+      <div><span class="t-prompt">➜ ~ </span><span class="cursor"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-tag">// 01 — EXPERTISE</div>
+  <h2 class="section-title">Technical Skills</h2>
+  <div class="divider"></div>
+
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-icon">☸️</div>
+      <div class="skill-cat">ORCHESTRATION</div>
+      <div class="skill-name">Container & Kubernetes</div>
+      <div class="tags">
+        <span class="tag">Kubernetes</span><span class="tag">Docker</span>
+        <span class="tag">Helm</span><span class="tag">Istio</span>
+        <span class="tag">ArgoCD</span><span class="tag">Podman</span>
+      </div>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-icon">☁️</div>
+      <div class="skill-cat">CLOUD PLATFORMS</div>
+      <div class="skill-name">Cloud Infrastructure</div>
+      <div class="tags">
+        <span class="tag">AWS</span><span class="tag">Azure</span>
+        <span class="tag">GCP</span><span class="tag">EC2</span>
+        <span class="tag">EKS</span><span class="tag">Lambda</span>
+      </div>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-icon">🔧</div>
+      <div class="skill-cat">CI/CD</div>
+      <div class="skill-name">Pipeline Automation</div>
+      <div class="tags">
+        <span class="tag">Jenkins</span><span class="tag">GitHub Actions</span>
+        <span class="tag">GitLab CI</span><span class="tag">ArgoCD</span>
+        <span class="tag">Tekton</span><span class="tag">CircleCI</span>
+      </div>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-icon">🏗️</div>
+      <div class="skill-cat">INFRASTRUCTURE AS CODE</div>
+      <div class="skill-name">IaC & Configuration</div>
+      <div class="tags">
+        <span class="tag">Terraform</span><span class="tag">Ansible</span>
+        <span class="tag">Pulumi</span><span class="tag">CloudFormation</span>
+        <span class="tag">Chef</span>
+      </div>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-icon">📊</div>
+      <div class="skill-cat">OBSERVABILITY</div>
+      <div class="skill-name">Monitoring & Logging</div>
+      <div class="tags">
+        <span class="tag">Prometheus</span><span class="tag">Grafana</span>
+        <span class="tag">ELK Stack</span><span class="tag">Datadog</span>
+        <span class="tag">Jaeger</span><span class="tag">PagerDuty</span>
+      </div>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-icon">☕</div>
+      <div class="skill-cat">BACKEND DEV</div>
+      <div class="skill-name">Java Ecosystem</div>
+      <div class="tags">
+        <span class="tag">Java 21</span><span class="tag">Spring Boot</span>
+        <span class="tag">Maven</span><span class="tag">Gradle</span>
+        <span class="tag">Microservices</span><span class="tag">REST APIs</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE VISUALIZATION -->
+<section id="pipeline">
+  <div class="section-tag">// 02 — WORKFLOW</div>
+  <h2 class="section-title">CI/CD Pipeline Flow</h2>
+  <div class="divider"></div>
+  <p style="color:var(--muted);font-size:0.9rem;margin-bottom:2rem;">End-to-end deployment pipeline I design and maintain for Java microservices.</p>
+
+  <div class="pipeline-flow">
+    <div class="pipe-step">
+      <div class="pipe-status"></div>
+      <div class="pipe-icon">💻</div>
+      <div class="pipe-label">CODE</div>
+      <div class="pipe-sub">Git Push</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+
+    <div class="pipe-step">
+      <div class="pipe-status"></div>
+      <div class="pipe-icon">🔍</div>
+      <div class="pipe-label">TEST</div>
+      <div class="pipe-sub">JUnit / Sonar</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+
+    <div class="pipe-step">
+      <div class="pipe-status"></div>
+      <div class="pipe-icon">🏗️</div>
+      <div class="pipe-label">BUILD</div>
+      <div class="pipe-sub">Maven / Docker</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+
+    <div class="pipe-step">
+      <div class="pipe-status"></div>
+      <div class="pipe-icon">🛡️</div>
+      <div class="pipe-label">SCAN</div>
+      <div class="pipe-sub">Trivy / SAST</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+
+    <div class="pipe-step">
+      <div class="pipe-status"></div>
+      <div class="pipe-icon">📦</div>
+      <div class="pipe-label">PUBLISH</div>
+      <div class="pipe-sub">ECR / Nexus</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+
+    <div class="pipe-step">
+      <div class="pipe-status"></div>
+      <div class="pipe-icon">🚀</div>
+      <div class="pipe-label">DEPLOY</div>
+      <div class="pipe-sub">Helm / ArgoCD</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+
+    <div class="pipe-step">
+      <div class="pipe-status"></div>
+      <div class="pipe-icon">📊</div>
+      <div class="pipe-label">MONITOR</div>
+      <div class="pipe-sub">Grafana / PD</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-tag">// 03 — WORK</div>
+  <h2 class="section-title">Featured Projects</h2>
+  <div class="divider"></div>
+
+  <div class="projects-grid">
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-icon">☸️</div>
+        <span class="project-badge">PRODUCTION</span>
+      </div>
+      <div class="project-name">K8s Multi-Tenant Platform</div>
+      <div class="project-desc">
+        Designed and deployed a multi-tenant Kubernetes platform on AWS EKS serving 50+ microservices with namespace isolation, RBAC, and automated scaling policies.
+      </div>
+      <div class="project-stack">
+        <span class="tag">EKS</span><span class="tag">Helm</span>
+        <span class="tag">Terraform</span><span class="tag">Istio</span><span class="tag">ArgoCD</span>
+      </div>
+      <div class="project-links">
+        <a href="#" class="project-link">→ GitHub</a>
+        <a href="#" class="project-link">→ Case Study</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-icon">🔄</div>
+        <span class="project-badge">OPEN SOURCE</span>
+      </div>
+      <div class="project-name">Java Spring CI/CD Template</div>
+      <div class="project-desc">
+        Reusable GitHub Actions pipeline for Spring Boot apps — builds, tests, scans with SonarQube, packages as Docker image, and deploys to Kubernetes with zero-downtime rolling updates.
+      </div>
+      <div class="project-stack">
+        <span class="tag">GitHub Actions</span><span class="tag">Spring Boot</span>
+        <span class="tag">Docker</span><span class="tag">SonarQube</span>
+      </div>
+      <div class="project-links">
+        <a href="#" class="project-link">→ GitHub</a>
+        <a href="#" class="project-link">→ Docs</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-icon">🏗️</div>
+        <span class="project-badge">INFRASTRUCTURE</span>
+      </div>
+      <div class="project-name">AWS Landing Zone (IaC)</div>
+      <div class="project-desc">
+        Full Terraform modules for a secure AWS multi-account landing zone with VPC peering, Transit Gateway, SSO, centralized logging, and GuardDuty.
+      </div>
+      <div class="project-stack">
+        <span class="tag">Terraform</span><span class="tag">AWS</span>
+        <span class="tag">Organizations</span><span class="tag">SSO</span>
+      </div>
+      <div class="project-links">
+        <a href="#" class="project-link">→ GitHub</a>
+        <a href="#" class="project-link">→ Architecture</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-icon">📊</div>
+        <span class="project-badge">MONITORING</span>
+      </div>
+      <div class="project-name">Observability Stack</div>
+      <div class="project-desc">
+        Complete observability platform using Prometheus, Grafana, and Loki deployed via Helm. Includes pre-built dashboards for JVM metrics, Spring Boot actuator, and business KPIs.
+      </div>
+      <div class="project-stack">
+        <span class="tag">Prometheus</span><span class="tag">Grafana</span>
+        <span class="tag">Loki</span><span class="tag">Jaeger</span>
+      </div>
+      <div class="project-links">
+        <a href="#" class="project-link">→ GitHub</a>
+        <a href="#" class="project-link">→ Demo</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-icon">🛡️</div>
+        <span class="project-badge">SECURITY</span>
+      </div>
+      <div class="project-name">DevSecOps Pipeline</div>
+      <div class="project-desc">
+        Security-first CI/CD pipeline integrating SAST (SonarQube), DAST (OWASP ZAP), container scanning (Trivy), and secrets detection (GitLeaks) for Java microservices.
+      </div>
+      <div class="project-stack">
+        <span class="tag">Trivy</span><span class="tag">OWASP ZAP</span>
+        <span class="tag">SonarQube</span><span class="tag">GitLeaks</span>
+      </div>
+      <div class="project-links">
+        <a href="#" class="project-link">→ GitHub</a>
+        <a href="#" class="project-link">→ Blog</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-icon">⚡</div>
+        <span class="project-badge">AUTOMATION</span>
+      </div>
+      <div class="project-name">Ansible Config Management</div>
+      <div class="project-desc">
+        Ansible playbooks for automated provisioning of Java app servers — installs JDK, configures systemd services, manages log rotation, and handles zero-downtime deployments.
+      </div>
+      <div class="project-stack">
+        <span class="tag">Ansible</span><span class="tag">Java</span>
+        <span class="tag">systemd</span><span class="tag">Nginx</span>
+      </div>
+      <div class="project-links">
+        <a href="#" class="project-link">→ GitHub</a>
+        <a href="#" class="project-link">→ Guide</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-tag">// 04 — CAREER</div>
+  <h2 class="section-title">Experience</h2>
+  <div class="divider"></div>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="exp-period">2022 – PRESENT</div>
+      <div class="exp-role">Senior DevOps Engineer</div>
+      <div class="exp-company">TechCorp Solutions · Hyderabad</div>
+      <ul class="exp-list">
+        <li>Architected and maintained EKS clusters serving 200k+ daily users with 99.98% uptime</li>
+        <li>Reduced deployment time by 70% through GitOps with ArgoCD and Helm</li>
+        <li>Built centralized observability stack cutting MTTR from 45 min to 8 min</li>
+        <li>Led migration of 15 Java Spring Boot services from VMs to Kubernetes</li>
+        <li>Implemented DevSecOps practices reducing critical vulnerabilities by 85%</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="exp-period">2020 – 2022</div>
+      <div class="exp-role">DevOps Engineer</div>
+      <div class="exp-company">Infosys · Bengaluru</div>
+      <ul class="exp-list">
+        <li>Designed Jenkins pipelines for 30+ Java microservices across 3 environments</li>
+        <li>Provisioned and managed AWS infrastructure using Terraform</li>
+        <li>Set up ELK Stack for centralized log aggregation across 50+ services</li>
+        <li>Automated infrastructure provisioning reducing setup time from 3 days to 2 hours</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="exp-period">2019 – 2020</div>
+      <div class="exp-role">Java Developer → DevOps Transition</div>
+      <div class="exp-company">StartupXYZ · Remote</div>
+      <ul class="exp-list">
+        <li>Developed Spring Boot REST APIs and began automating build/deploy processes</li>
+        <li>Containerized Java applications with Docker and Docker Compose</li>
+        <li>Set up basic CI/CD using GitHub Actions for automated testing</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certs">
+  <div class="section-tag">// 05 — CERTIFICATIONS</div>
+  <h2 class="section-title">Certifications</h2>
+  <div class="divider"></div>
+
+  <div class="certs-grid">
+    <div class="cert-card">
+      <div class="cert-logo">☁️</div>
+      <div class="cert-info">
+        <div class="cert-name">AWS Solutions Architect</div>
+        <div class="cert-issuer">Amazon Web Services · Professional</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-logo">☸️</div>
+      <div class="cert-info">
+        <div class="cert-name">CKA — Certified Kubernetes</div>
+        <div class="cert-issuer">CNCF · Administrator</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-logo">🏗️</div>
+      <div class="cert-info">
+        <div class="cert-name">HashiCorp Terraform</div>
+        <div class="cert-issuer">HashiCorp · Associate</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-logo">🔵</div>
+      <div class="cert-info">
+        <div class="cert-name">Azure DevOps Engineer</div>
+        <div class="cert-issuer">Microsoft · Expert</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-logo">🐳</div>
+      <div class="cert-info">
+        <div class="cert-name">Docker Certified Associate</div>
+        <div class="cert-issuer">Docker Inc.</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-logo">☕</div>
+      <div class="cert-info">
+        <div class="cert-name">Oracle Java SE 17</div>
+        <div class="cert-issuer">Oracle · Professional</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-tag">// 06 — CONTACT</div>
+  <h2 class="section-title">Let's Build Together</h2>
+  <div class="divider"></div>
+
+  <div class="contact-grid">
+    <div class="contact-info">
+      <p class="contact-desc">
+        Looking for a DevOps engineer who can architect scalable infrastructure, 
+        automate CI/CD pipelines, and bring Java services to production reliably?
+        Let's connect.
+      </p>
+      <div class="contact-links">
+        <a href="mailto:arjun@example.com" class="contact-link">
+          <span class="contact-link-icon">📧</span>
+          arjun@example.com
+        </a>
+        <a href="https://linkedin.com" class="contact-link" target="_blank">
+          <span class="contact-link-icon">💼</span>
+          linkedin.com/in/arjunkumar
+        </a>
+        <a href="https://github.com" class="contact-link" target="_blank">
+          <span class="contact-link-icon">🐙</span>
+          github.com/arjunkumar-devops
+        </a>
+        <a href="#" class="contact-link">
+          <span class="contact-link-icon">📄</span>
+          Download Resume (PDF)
+        </a>
+      </div>
+    </div>
+
+    <div class="contact-form">
+      <div class="form-group">
+        <label class="form-label">// YOUR_NAME</label>
+        <input type="text" class="form-input" placeholder="e.g. Ravi Shankar">
+      </div>
+      <div class="form-group">
+        <label class="form-label">// EMAIL_ADDRESS</label>
+        <input type="email" class="form-input" placeholder="you@company.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">// MESSAGE</label>
+        <textarea class="form-input" rows="4" placeholder="Tell me about the role or project..."></textarea>
+      </div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="alert('Message sent! I will get back to you soon.')">
+        ▶ Send Message
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  Built with <span>♥</span> · Arjun Kumar · DevOps Engineer · Hyderabad, India
+</footer>
+
+</body>
+</html>
